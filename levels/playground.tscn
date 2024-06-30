@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3 uid="uid://bse0op3nfknuk"]
+
+[ext_resource type="Script" path="res://levels/playground.gd" id="1_w5xh7"]
+[ext_resource type="Script" path="res://addons/mobile_controls/components/screen_gesture.gd" id="2_0gyiu"]
+[ext_resource type="Script" path="res://addons/mobile_controls/components/virtual_joystick.gd" id="2_77qef"]
+[ext_resource type="Texture2D" uid="uid://eeqyd0dcds4h" path="res://addons/mobile_controls/icons/joystick_base_outline.png" id="3_0n788"]
+[ext_resource type="Texture2D" uid="uid://c6rnxjyyev50s" path="res://addons/mobile_controls/icons/pan_icon.svg" id="3_juxig"]
+[ext_resource type="Texture2D" uid="uid://bljx7ho1q7i11" path="res://addons/mobile_controls/icons/rotate_icon.svg" id="4_c7os8"]
+[ext_resource type="Texture2D" uid="uid://bscj3s5ruyy3c" path="res://addons/mobile_controls/icons/joystick_tip_arrows.png" id="4_jgydy"]
+[ext_resource type="Texture2D" uid="uid://bmrr0ugsw5h3q" path="res://addons/mobile_controls/icons/joystick_tip.png" id="6_sd6op"]
+
+[node name="Playground" type="Node2D"]
+script = ExtResource("1_w5xh7")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="ScreenGesture" type="Control" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("2_0gyiu")
+show_ui_feedback = true
+pan_icon = ExtResource("3_juxig")
+rotate_icon = ExtResource("4_c7os8")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LeftVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("2_77qef")
+outline_texture = ExtResource("3_0n788")
+point_texture = ExtResource("4_jgydy")
+joy_axis_horizontal = 0
+joy_axis_vertical = 1
+
+[node name="RightVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("2_77qef")
+outline_texture = ExtResource("3_0n788")
+point_texture = ExtResource("6_sd6op")
+pointer_constraint_mode = 1
+mark_input_as_handled = true
+joy_axis_horizontal = 2
+joy_axis_vertical = 3
