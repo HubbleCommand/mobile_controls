@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://bse0op3nfknuk"]
 
-[ext_resource type="Script" path="res://levels/playground.gd" id="1_w5xh7"]
+[ext_resource type="Script" path="res://addons/mobile_controls/levels/playground.gd" id="1_w5xh7"]
 [ext_resource type="Script" path="res://addons/mobile_controls/components/screen_gesture.gd" id="2_0gyiu"]
 [ext_resource type="Script" path="res://addons/mobile_controls/components/virtual_joystick.gd" id="2_77qef"]
 [ext_resource type="Texture2D" uid="uid://eeqyd0dcds4h" path="res://addons/mobile_controls/icons/joystick_base_outline.png" id="3_0n788"]
