@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://db2du3wpiri66"]
+
+[ext_resource type="Script" path="res://addons/mobile_controls/components/virtual_joystick.gd" id="1_ag1uu"]
+[ext_resource type="Texture2D" uid="uid://eeqyd0dcds4h" path="res://addons/mobile_controls/icons/joystick_base_outline.png" id="1_p3bsf"]
+[ext_resource type="Texture2D" uid="uid://bmrr0ugsw5h3q" path="res://addons/mobile_controls/icons/joystick_tip.png" id="2_u6e65"]
+
+[node name="VirtualJoystick" type="MarginContainer"]
+offset_right = 240.0
+offset_bottom = 240.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("1_ag1uu")
+joy_axis_horizontal = 0
+joy_axis_vertical = 1
+
+[node name="Outline" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_p3bsf")
+
+[node name="Point" type="TextureRect" parent="Outline"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_u6e65")
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="."]
+visible = false
+texture_normal = ExtResource("1_p3bsf")
