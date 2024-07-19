@@ -22,6 +22,7 @@ class_name ScreenGesture
 # https://github.com/arypbatista/godot-swipe-detector
 # https://www.youtube.com/watch?v=7XlMqjikI9A
 
+@export var touchscreen_only: bool = false
 
 @export var show_ui_feedback := false	#TODO add UI feeback (?)
 @export var print_debug_gestures = true
@@ -81,6 +82,11 @@ var btn_mode: TextureButton
 var clr_rct: ColorRect
 
 func _ready():
+	if touchscreen_only and not DisplayServer.is_touchscreen_available():
+		#TODO using hide() or visible = false messes with layout...
+		modulate = Color(1, 1, 1, 0)
+		process_mode = ProcessMode.PROCESS_MODE_DISABLED
+	
 	#Build for addon
 	tmr_long_press = Timer.new()
 	tmr_long_press.wait_time = 0.5
