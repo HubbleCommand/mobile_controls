@@ -26,7 +26,6 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_0gyiu")
-touchscreen_only = true
 show_ui_feedback = true
 pan_icon = ExtResource("3_juxig")
 rotate_icon = ExtResource("4_c7os8")
