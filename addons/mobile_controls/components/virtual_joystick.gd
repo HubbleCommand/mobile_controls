@@ -1,3 +1,4 @@
+## Virtual Joystick for use on touchscreens to emulate a controller joystick
 @tool
 extends MarginContainer
 #Images from https://godotengine.org/asset-library/asset/1787, code is mine
@@ -5,15 +6,21 @@ class_name VirtualJoystick
 
 @export var margin: int = 20
 
-@export var outline_texture: Texture2D:
+@export var texture_outline: Texture2D:
 	set(value):
-		outline_texture = value
+		texture_outline = value
 		if Engine.is_editor_hint():
 			outline.texture = value
 			notify_property_list_changed()
-@export var point_texture: Texture2D:
+@export var texture_point: Texture2D:
 	set(value):
-		point_texture = value
+		texture_point = value
+		if Engine.is_editor_hint():
+			point.texture = value
+			notify_property_list_changed()
+@export var texture_point_down: Texture2D:
+	set(value):
+		texture_point_down = value
 		if Engine.is_editor_hint():
 			point.texture = value
 			notify_property_list_changed()
@@ -49,18 +56,16 @@ func _ready():
 	#Create scene for addon
 	outline = TextureRect.new()
 	outline.name = "Outline"
-	outline.texture = outline_texture
+	outline.texture = texture_outline
 	
 	point = TextureRect.new()
 	point.name = "Point"
-	point.texture = point_texture
+	point.texture = texture_point
 	
-	outline.add_child(point)
-	#Maybe center point at start or something...
-	add_child(outline)
+	outline.add_child(point, InternalMode.INTERNAL_MODE_BACK)
+	add_child(outline, InternalMode.INTERNAL_MODE_BACK)
+	_reset_point()
 	
-	#configure nodes
-	# I don't think there's anything to do here?
 	if not DisplayServer.is_touchscreen_available() and visibility_mode == EVisibilityMode.TOUCHSCREEN_ONLY:
 		hide()
 
