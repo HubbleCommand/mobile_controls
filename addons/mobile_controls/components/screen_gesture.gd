@@ -171,7 +171,12 @@ func _toggle_touchscreen_mode():
 	btn_mode.texture_normal = resource
 
 # We use _gui_input instead of _input to only consider events within this control
+#TODO some issues here if emulate mouse from touch or whatever...
+# for now, don't do any emulating, always handle "raw" input
 func _gui_input(event):
+	var emulate_touch_from_mouse = ProjectSettings.get_setting("input_devices/pointing/emulate_touch_from_mouse")
+	var emulate_mouse_from_touch = ProjectSettings.get_setting("input_devices/pointing/emulate_mouse_from_touch")	#Default is true
+	
 	match event.get_class():
 		"InputEventMouseButton":
 			#TODO need an action to map to here I guess, or something... i.e. only zoom when CTRL is pressed
@@ -280,7 +285,7 @@ func _long_press_timeout():
 		else:
 			long_press_gesture.emit(state.last_pointer_down.position)
 	else:
-		print("not continuing with long press due to pointers count being " + state.pointers)
+		print("not continuing with long press due to pointers count being " + str(state.pointers))
 
 func _pring_gesture_debug(gesture : String, source: String = ""):
 	if !print_debug_gestures:
