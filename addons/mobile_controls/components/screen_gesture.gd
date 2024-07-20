@@ -83,7 +83,6 @@ var clr_rct: ColorRect
 
 func _ready():
 	if touchscreen_only and not DisplayServer.is_touchscreen_available():
-		#TODO using hide() or visible = false messes with layout...
 		modulate = Color(1, 1, 1, 0)
 		process_mode = ProcessMode.PROCESS_MODE_DISABLED
 	
