@@ -26,6 +26,15 @@ class_name ScreenGesture
 
 @export var show_ui_feedback := false	#TODO add UI feeback (?)
 @export var print_debug_gestures = true
+@export_group("Textures")
+@export var mode_button_minimum_size : Vector2i:
+	set(value):
+		mode_button_minimum_size = value
+		if btn_mode:
+			btn_mode.custom_minimum_size = value
+			btn_mode.get_parent().set_anchors_preset(PRESET_TOP_RIGHT)
+		if Engine.is_editor_hint():
+			notify_property_list_changed()
 
 @export var region_color : Color = Color8(255, 255, 255, 30):
 	set(value):
