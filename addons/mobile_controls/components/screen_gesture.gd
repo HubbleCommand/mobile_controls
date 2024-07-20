@@ -1,9 +1,9 @@
+## General Control to handle multiple gestures; panning, zoom, rotating, double tap
+## NO STATE IS HELD (pan or scale), only detects the gestures
+
 @tool
 extends Control
 class_name ScreenGesture
-
-# General Control to handle multiple gestures; panning, zoom, rotating, double tap
-# This class DOES NOT hold any state relevant to any pan or scale, only detects the gestures
 
 #Note, some of the input settings in Project Settings make some funky shit
 # also fixes InputEventMouseMotion being sent when holding a press on Android & then panning
