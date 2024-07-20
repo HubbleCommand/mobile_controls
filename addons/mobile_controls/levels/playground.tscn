@@ -22,13 +22,31 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="ScreenGesture" type="Control" parent="CanvasLayer/VBoxContainer"]
+[node name="ScreenGesture" type="Control" parent="CanvasLayer/VBoxContainer" node_paths=PackedStringArray("floating_joystick_node")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_0gyiu")
-show_ui_feedback = true
+floating_joystick_enabled = true
+floating_joystick_node = NodePath("VirtualJoystick")
+mode_button_minimum_size = Vector2i(50, 50)
 pan_icon = ExtResource("3_juxig")
 rotate_icon = ExtResource("4_c7os8")
+
+[node name="VirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/ScreenGesture"]
+process_mode = 4
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 240.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("2_77qef")
+texture_outline = ExtResource("3_0n788")
+texture_point = ExtResource("6_sd6op")
+joy_axis_horizontal = 0
+joy_axis_vertical = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
@@ -41,8 +59,8 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 script = ExtResource("2_77qef")
-outline_texture = ExtResource("3_0n788")
-point_texture = ExtResource("4_jgydy")
+texture_outline = ExtResource("3_0n788")
+texture_point = ExtResource("4_jgydy")
 joy_axis_horizontal = 0
 joy_axis_vertical = 1
 
@@ -54,9 +72,11 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 script = ExtResource("2_77qef")
-outline_texture = ExtResource("3_0n788")
-point_texture = ExtResource("6_sd6op")
+texture_outline = ExtResource("3_0n788")
+texture_point = ExtResource("6_sd6op")
 pointer_constraint_mode = 1
 mark_input_as_handled = true
 joy_axis_horizontal = 2
 joy_axis_vertical = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
