@@ -103,33 +103,18 @@ func _ready():
 	add_child(clr_rct)
 	
 	var container = MarginContainer.new()
-	#btn_mode = TextureRect.new()
-	#btn_mode.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	#btn_mode.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
-	#btn_mode.mouse_filter = Control.MOUSE_FILTER_STOP
+	container.name = "ButtonModeMarginContainer"
 	btn_mode = TextureButton.new()
+	btn_mode.name = "ButtonMode"
 	btn_mode.ignore_texture_size = true
 	btn_mode.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT
-	
-	#container.grow_vertical = Control.GROW_DIRECTION_BOTH
-	#container.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	container.size.x = 120
-	container.size.y = 120
-	container.set_anchors_preset(PRESET_TOP_RIGHT, true)
-	container.position.x -= 120
-	#TODO gross... but doable for now... will be a bitch for resizing...
-	#container.set_anchors_preset(PRESET_TOP_RIGHT)
-	
+	btn_mode.custom_minimum_size = mode_button_minimum_size
 	
 	var margin_value = 20
 	add_theme_constant_override("margin_top", margin_value)
 	add_theme_constant_override("margin_left", margin_value)
 	add_theme_constant_override("margin_bottom", margin_value)
 	add_theme_constant_override("margin_right", margin_value)
-
-	#Need absolute URL here...
-	#btn_mode.set_script("res://addons/mobile_controls/components/screen_mode_button.gd")
-	btn_mode.pressed.connect(_toggle_touchscreen_mode)
 	
 	
 	add_child(container)
@@ -137,6 +122,8 @@ func _ready():
 	_toggle_touchscreen_mode()
 	
 	tmr_long_press.wait_time = long_press_timeout / 1000
+	
+	container.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_KEEP_WIDTH, 0.0)
 
 
 func _toggle_touchscreen_mode():
