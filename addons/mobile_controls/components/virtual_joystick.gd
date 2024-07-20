@@ -114,6 +114,11 @@ func _event_in_area(event_position: Vector2) -> bool:
 	var center = outline.global_position + (outline.get_rect().size / 2)	
 	return event_position.distance_to(center) <= width / 2
 
+## Fixes issue when Floating, will accept input events properly
+## FOR INTERNAL PACKAGE USE ONLY, do not use unless you know what you are doing!
+func accept_next():
+	_down = true
+
 # We don't want to use gui_input as we still want gestures outside of this control
 func _input(event):
 	if event is InputEventScreenTouch or event is InputEventMouseButton:
