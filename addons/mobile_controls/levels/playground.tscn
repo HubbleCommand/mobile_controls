@@ -78,5 +78,3 @@ pointer_constraint_mode = 1
 mark_input_as_handled = true
 joy_axis_horizontal = 2
 joy_axis_vertical = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
