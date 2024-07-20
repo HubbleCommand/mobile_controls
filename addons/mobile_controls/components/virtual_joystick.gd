@@ -49,9 +49,11 @@ func _ready():
 	
 	#Create scene for addon
 	outline = TextureRect.new()
+	outline.name = "Outline"
 	outline.texture = outline_texture
 	
 	point = TextureRect.new()
+	point.name = "Point"
 	point.texture = point_texture
 	
 	outline.add_child(point)
