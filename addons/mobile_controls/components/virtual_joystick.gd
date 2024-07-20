@@ -18,12 +18,7 @@ class_name VirtualJoystick
 		if Engine.is_editor_hint():
 			point.texture = value
 			notify_property_list_changed()
-@export var texture_point_down: Texture2D:
-	set(value):
-		texture_point_down = value
-		if Engine.is_editor_hint():
-			point.texture = value
-			notify_property_list_changed()
+@export var texture_point_pressed: Texture2D
 
 var outline : TextureRect
 var point: TextureRect
@@ -72,6 +67,7 @@ func _ready():
 func _reset_point():
 	point.set_position(point.get_rect().size / 2)
 
+#TODO fix scaling
 func _set_point(position: Vector2):
 	var limit = outline.get_rect().size.x
 	var length
@@ -118,6 +114,7 @@ func _event_in_area(event_position: Vector2) -> bool:
 ## FOR INTERNAL PACKAGE USE ONLY, do not use unless you know what you are doing!
 func accept_next():
 	_down = true
+	_switch_point_texture()
 
 # We don't want to use gui_input as we still want gestures outside of this control
 func _input(event):
@@ -126,6 +123,7 @@ func _input(event):
 			if _event_in_area(event.position):
 				_set_point(event.position)
 				_down = true
+				_switch_point_texture()
 				if "index" in event:
 					_input_pointer_index = event.index
 			#else:
@@ -138,6 +136,7 @@ func _input(event):
 					return
 			_reset_point()
 			_down = false
+			_switch_point_texture()
 	
 	elif event is InputEventScreenDrag or event is InputEventMouseMotion:
 		if not _down:
@@ -148,3 +147,7 @@ func _input(event):
 				_set_point(event.position)
 		else:
 			_set_point(event.position)
+
+func _switch_point_texture():
+	if texture_point_pressed:
+		point.texture = texture_point_pressed if _down else texture_point
