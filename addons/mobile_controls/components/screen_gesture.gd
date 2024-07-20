@@ -27,6 +27,14 @@ class_name ScreenGesture
 @export var show_ui_feedback := false	#TODO add UI feeback (?)
 @export var print_debug_gestures = true
 
+@export var region_color : Color = Color8(255, 255, 255, 30):
+	set(value):
+		region_color = value
+		if clr_rct:
+			clr_rct.color = value
+		if Engine.is_editor_hint():
+			notify_property_list_changed()
+
 @export var pan_icon: Texture2D = load("res://addons/mobile_controls/icons/pan_icon.svg"):
 	set(value):
 		pan_icon = value
@@ -94,7 +102,8 @@ func _ready():
 	add_child(tmr_long_press)
 	
 	clr_rct = ColorRect.new()
-	clr_rct.color = Color8(255, 255, 255, 30)
+	clr_rct.name = "Region"
+	clr_rct.color = region_color
 	clr_rct.grow_vertical = Control.GROW_DIRECTION_BOTH
 	clr_rct.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	clr_rct.mouse_filter = Control.MOUSE_FILTER_IGNORE
