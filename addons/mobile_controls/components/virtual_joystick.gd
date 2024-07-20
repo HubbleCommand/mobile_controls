@@ -18,8 +18,6 @@ class_name VirtualJoystick
 			point.texture = value
 			notify_property_list_changed()
 
-#@onready var outline = $Outline
-#@onready var point = $Outline/Point
 var outline : TextureRect
 var point: TextureRect
 var _input_pointer_index = -1	#"pointer" index like in Android with multiple pointers
@@ -37,7 +35,6 @@ enum EPointerConstraintMode { DYNAMIC_IN, DYNAMIC_OUT }
 #enum EFeedbackMode { NONE, JOYSTICK }
 #@export var feedback_mode := EFeedbackMode.JOYSTICK
 
-#Would use actions, but using JoyStick instead (honestly better)
 @export var joy_axis_horizontal : JoyAxis = JOY_AXIS_INVALID
 @export var joy_axis_vertical : JoyAxis = JOY_AXIS_INVALID
 
