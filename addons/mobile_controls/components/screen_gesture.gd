@@ -156,6 +156,8 @@ func _ready():
 	tmr_long_press.wait_time = long_press_timeout / 1000
 	
 	container.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_KEEP_WIDTH, 0.0)
+	if floating_joystick_node:
+		_enable_fvj(false)
 
 func _toggle_touchscreen_mode():
 	var resource : Texture2D
@@ -194,6 +196,8 @@ func _gui_input(event):
 				state.pointers -= 1
 				if state.pointers == 0:
 					gesture_end.emit()
+					if floating_joystick_node.process_mode == ProcessMode.PROCESS_MODE_INHERIT:
+						_enable_fvj(false)
 				tmr_long_press.stop()
 		"InputEventMouseMotion":
 			if !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) && Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
@@ -238,6 +242,8 @@ func _gui_input(event):
 			state.pointers -= 1
 			if state.pointers == 0:
 				gesture_end.emit()
+				if floating_joystick_node.process_mode == ProcessMode.PROCESS_MODE_INHERIT:
+					_enable_fvj(false)
 			tmr_long_press.stop()
 		if event.double_tap:
 			_pring_gesture_debug("double tap", "screen")
@@ -265,12 +271,25 @@ func _long_press_timeout():
 		_pring_gesture_debug("long press")
 		#TODO determine how to do this...
 		if floating_joystick_enabled:
-			pass
+			_pring_gesture_debug("handling floating VirtualJoystick")
+			_enable_fvj(true)
+			floating_joystick_node.position = Vector2(
+				state.last_pointer_down.position.x - (floating_joystick_node.get_rect().size.x / 2),
+				state.last_pointer_down.position.y - (floating_joystick_node.get_rect().size.y / 2)
+			)
 		else:
 			long_press_gesture.emit(state.last_pointer_down.position)
+	else:
+		print("not continuing with long press due to pointers count being " + state.pointers)
 
 func _pring_gesture_debug(gesture : String, source: String = ""):
 	if !print_debug_gestures:
 		return
 	if source.is_empty():	print("		gesture debug --- gesture : ", gesture)
 	else:					print("		gesture debug --- gesture : ", gesture, " - from source : ", source)
+
+func _enable_fvj(enable: bool):
+	floating_joystick_node.modulate = Color(1, 1, 1, 1) if enable else Color(1, 1, 1, 0)
+	floating_joystick_node.process_mode = ProcessMode.PROCESS_MODE_INHERIT if enable else ProcessMode.PROCESS_MODE_DISABLED
+	if enable:
+		floating_joystick_node.accept_next()
