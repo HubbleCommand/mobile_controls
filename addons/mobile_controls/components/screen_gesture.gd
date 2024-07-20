@@ -16,16 +16,31 @@ class_name ScreenGesture
 # Enable 
 #	"Enable Pan and Scale Gestures"
 
-# There are some other projects, however, I don't like how any of these have been done
-# https://github.com/godotengine/godot/issues/13139
-# https://github.com/Federico-Ciuffardi/GodotTouchInputManager
-# https://github.com/arypbatista/godot-swipe-detector
-# https://www.youtube.com/watch?v=7XlMqjikI9A
-
+@export_group("Gestures Configuration")
+@export var consider_input_gesture_as_handled = true
+## Timeout in milliseconds for two consecutive screen taps 
+## from the same pointer to be considered a double tap (mouse only)
+@export var double_tap_timeout : float = 500
+## Timeout in milliseconds for detecting a long press / hold
+@export var long_press_timeout : float = 1000
+## Control only enabled when on a device with a touchscreen
 @export var touchscreen_only: bool = false
+## Multiple gestures can be reported at once (i.e. scale and pan in the same gesture)
+@export var multi_gesture: bool = false
 
-@export var show_ui_feedback := false	#TODO add UI feeback (?)
-@export var print_debug_gestures = true
+## Determines UI
+@export_subgroup("Gestures")
+@export var gesture_pan_enabled: bool = true
+@export var gesture_scale_enabled: bool = true
+@export var gesture_rotate_enabled: bool = true
+
+@export_subgroup("Floating Joystick")
+## Long presses will enable a floating joystick at the location, until the pointer is risen
+@export var floating_joystick_enabled: bool = false
+#https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_exports.html#nodes
+## Path to the VirtualJoystick node to use
+@export var floating_joystick_node: VirtualJoystick
+
 @export_group("Textures")
 @export var mode_button_minimum_size : Vector2i:
 	set(value):
@@ -44,6 +59,7 @@ class_name ScreenGesture
 		if Engine.is_editor_hint():
 			notify_property_list_changed()
 
+#TODO export all texture variants for TextureButton
 @export var pan_icon: Texture2D = load("res://addons/mobile_controls/icons/pan_icon.svg"):
 	set(value):
 		pan_icon = value
@@ -57,15 +73,14 @@ class_name ScreenGesture
 			btn_mode.texture = value
 			notify_property_list_changed()
 
-@export_subgroup("Gestures Configuration")
-@export var consider_input_gesture_as_handled = true
-## Timeout in milliseconds for two consecutive screen taps 
-## from the same pointer to be considered a double tap (mouse only)
-@export var double_tap_timeout : float = 500
-## Timeout in milliseconds for detecting a long press / hold
-@export var long_press_timeout : float = 1000
 
-#Basic gestures
+@export_group("Debug")
+## Show UI feedback at pointer location
+@export var show_ui_feedback := false	#TODO add UI feeback (?)
+## Print gesture debug info
+@export var print_debug_gestures = true
+
+## Gesture Signals
 signal double_tap_gesture(target: Vector2)
 signal long_press_gesture(gesture: Vector2)
 signal pan_gesture(position: Vector2, direction: Vector2)
@@ -83,7 +98,7 @@ class Pointer :
 		timestamp = time
 		position = pos
 
-enum ETouchScreenMode { PAN, ROTATE }
+enum ETouchScreenMode { PAN, ROTATE, SCALE }
 
 class ScreenGestureState:
 	var pointers : int = 0
@@ -92,9 +107,7 @@ class ScreenGestureState:
 
 var state = ScreenGestureState.new()
 
-
 var tmr_long_press: Timer
-#var btn_mode: TextureRect
 var btn_mode: TextureButton
 var clr_rct: ColorRect
 
@@ -105,6 +118,7 @@ func _ready():
 	
 	#Build for addon
 	tmr_long_press = Timer.new()
+	tmr_long_press.name = "LongPressTimer"
 	tmr_long_press.wait_time = 0.5
 	tmr_long_press.one_shot = true
 	tmr_long_press.timeout.connect(_long_press_timeout)
@@ -127,13 +141,13 @@ func _ready():
 	btn_mode.ignore_texture_size = true
 	btn_mode.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT
 	btn_mode.custom_minimum_size = mode_button_minimum_size
+	btn_mode.pressed.connect(_toggle_touchscreen_mode)
 	
 	var margin_value = 20
 	add_theme_constant_override("margin_top", margin_value)
 	add_theme_constant_override("margin_left", margin_value)
 	add_theme_constant_override("margin_bottom", margin_value)
 	add_theme_constant_override("margin_right", margin_value)
-	
 	
 	add_child(container)
 	container.add_child(btn_mode)
@@ -142,7 +156,6 @@ func _ready():
 	tmr_long_press.wait_time = long_press_timeout / 1000
 	
 	container.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_KEEP_WIDTH, 0.0)
-
 
 func _toggle_touchscreen_mode():
 	var resource : Texture2D
@@ -250,7 +263,11 @@ func _long_press_timeout():
 	_pring_gesture_debug("long press - timeout")
 	if state.pointers == 1:
 		_pring_gesture_debug("long press")
-		long_press_gesture.emit(state.last_pointer_down.position)
+		#TODO determine how to do this...
+		if floating_joystick_enabled:
+			pass
+		else:
+			long_press_gesture.emit(state.last_pointer_down.position)
 
 func _pring_gesture_debug(gesture : String, source: String = ""):
 	if !print_debug_gestures:
