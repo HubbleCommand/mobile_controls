@@ -23,7 +23,6 @@ class_name VirtualJoystick
 var outline : TextureRect
 var point: TextureRect
 var _input_pointer_index = -1	#"pointer" index like in Android with multiple pointers
-#TODO can probably remove _down, as it seems there is always a pointer index
 var _down := false				#Used to handle between TOUCH DOWN & PAN /DRAG events
 
 enum EVisibilityMode { ALWAYS, TOUCHSCREEN_ONLY }
