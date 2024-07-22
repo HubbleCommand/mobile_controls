@@ -35,6 +35,7 @@ up={
 [input_devices]
 
 pointing/emulate_mouse_from_touch=false
+pointing/android/enable_pan_and_scale_gestures=true
 
 [rendering]
 
