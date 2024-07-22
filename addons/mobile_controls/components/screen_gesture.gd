@@ -5,17 +5,6 @@
 extends Control
 class_name ScreenGesture
 
-#Note, some of the input settings in Project Settings make some funky shit
-# also fixes InputEventMouseMotion being sent when holding a press on Android & then panning
-#TODO Required settings in Project Settings -> Input Devices -> Pointing
-#	-> https://docs.godotengine.org/en/stable/classes/class_projectsettings.html
-# Disable 
-#	"Emulate Touch From Mouse"
-#	"Emulate Mouse From Touch"
-#	"Enable Long Press as Right Click"
-# Enable 
-#	"Enable Pan and Scale Gestures"
-
 @export_group("Gestures Configuration")
 @export var consider_input_gesture_as_handled = true
 ## Timeout in milliseconds for two consecutive screen taps 
@@ -167,12 +156,9 @@ func _toggle_touchscreen_mode():
 	else:
 		state.tscreen_mode = ETouchScreenMode.PAN
 		resource = pan_icon
-	#btn_mode.texture = resource
 	btn_mode.texture_normal = resource
 
 # We use _gui_input instead of _input to only consider events within this control
-#TODO some issues here if emulate mouse from touch or whatever...
-# for now, don't do any emulating, always handle "raw" input
 func _gui_input(event):
 	var emulate_touch_from_mouse = ProjectSettings.get_setting("input_devices/pointing/emulate_touch_from_mouse")
 	var emulate_mouse_from_touch = ProjectSettings.get_setting("input_devices/pointing/emulate_mouse_from_touch")	#Default is true
