@@ -10,18 +10,18 @@ class_name VirtualJoystick
 	set(value):
 		texture_outline = value
 		if Engine.is_editor_hint():
-			outline.texture = value
+			_outline.texture = value
 			notify_property_list_changed()
 @export var texture_point: Texture2D:
 	set(value):
 		texture_point = value
 		if Engine.is_editor_hint():
-			point.texture = value
+			_point.texture = value
 			notify_property_list_changed()
 @export var texture_point_pressed: Texture2D
 
-var outline : TextureRect
-var point: TextureRect
+var _outline : TextureRect
+var _point: TextureRect
 var _input_pointer_index = -1	#"pointer" index like in Android with multiple pointers
 var _down := false				#Used to handle between TOUCH DOWN & PAN /DRAG events
 
@@ -48,52 +48,52 @@ func _ready():
 	add_theme_constant_override("margin_bottom", margin)
 	
 	#Create scene for addon
-	outline = TextureRect.new()
-	outline.name = "Outline"
-	outline.texture = texture_outline
+	_outline = TextureRect.new()
+	_outline.name = "Outline"
+	_outline.texture = texture_outline
 	
-	point = TextureRect.new()
-	point.name = "Point"
-	point.texture = texture_point
+	_point = TextureRect.new()
+	_point.name = "Point"
+	_point.texture = texture_point
 	
-	outline.add_child(point, InternalMode.INTERNAL_MODE_BACK)
-	add_child(outline, InternalMode.INTERNAL_MODE_BACK)
+	_outline.add_child(_point, InternalMode.INTERNAL_MODE_BACK)
+	add_child(_outline, InternalMode.INTERNAL_MODE_BACK)
 	_reset_point()
 	
 	if not DisplayServer.is_touchscreen_available() and visibility_mode == EVisibilityMode.TOUCHSCREEN_ONLY:
 		hide()
 
 func _reset_point():
-	point.set_position(point.get_rect().size / 2)
+	_point.set_position(_point.get_rect().size / 2)
 
 #TODO fix scaling
 func _set_point(position: Vector2):
-	var limit = outline.get_rect().size.x
+	var limit = _outline.get_rect().size.x
 	var length
 	#need global to compare to mouse position #outline.get_rect().position
-	var center = outline.global_position + (outline.get_rect().size / 2)
-	var offset = - (point.get_rect().size / 2)
+	var center = _outline.global_position + (_outline.get_rect().size / 2)
+	var offset = - (_point.get_rect().size / 2)
 	
 	if pointer_constraint_mode == EPointerConstraintMode.DYNAMIC_IN:
-		limit -= (point.get_rect().size.x) #- (point.get_rect().size.x / 2)
-		length = outline.get_rect().size.x - (point.get_rect().size.x) - (point.get_rect().size.x / 2)
+		limit -= (_point.get_rect().size.x) #- (point.get_rect().size.x / 2)
+		length = _outline.get_rect().size.x - (_point.get_rect().size.x) - (_point.get_rect().size.x / 2)
 	
 	elif pointer_constraint_mode == EPointerConstraintMode.DYNAMIC_OUT:
-		length = outline.get_rect().size.x - (point.get_rect().size.x)
+		length = _outline.get_rect().size.x - (_point.get_rect().size.x)
 	
 	var target
 	var direction = center.direction_to(position)
 	if position.distance_to(center) < limit / 2:
-		target = position - point.get_rect().size / 2
+		target = position - _point.get_rect().size / 2
 	else:
 		target = (direction * length) + center + offset
 	
-	var radius = outline.get_rect().size.x / 2
+	var radius = _outline.get_rect().size.x / 2
 	var action_target = (direction * (position.distance_to(center) / radius))
 	_send_input_event(HORIZONTAL, action_target.x)
 	_send_input_event(VERTICAL, action_target.y)
 	
-	point.set_global_position(target)
+	_point.set_global_position(target)
 
 #Need to set axis to something other than "Joy Axis Invalid", or get following error
 #Condition "p_axis < JoyAxis::LEFT_X || p_axis > JoyAxis::MAX" is true.
@@ -104,9 +104,9 @@ func _send_input_event(orientation: Orientation, strength: float):
 	Input.parse_input_event(joystick_event)
 
 func _event_in_area(event_position: Vector2) -> bool:
-	var width = outline.get_rect().size.x
+	var width = _outline.get_rect().size.x
 	#need global to compare to mouse position #outline.get_rect().position
-	var center = outline.global_position + (outline.get_rect().size / 2)	
+	var center = _outline.global_position + (_outline.get_rect().size / 2)	
 	return event_position.distance_to(center) <= width / 2
 
 ## Fixes issue when Floating, will accept input events properly
@@ -149,4 +149,4 @@ func _input(event):
 
 func _switch_point_texture():
 	if texture_point_pressed:
-		point.texture = texture_point_pressed if _down else texture_point
+		_point.texture = texture_point_pressed if _down else texture_point
