@@ -4,7 +4,10 @@ extends MarginContainer
 #Images from https://godotengine.org/asset-library/asset/1787, code is mine
 class_name VirtualJoystick
 
-@export var margin: int = 20
+@export var margin: int = 20:
+	set(value):
+		margin = value
+		_update_margin()
 
 @export var texture_outline: Texture2D:
 	set(value):
@@ -42,10 +45,7 @@ enum EPointerConstraintMode { DYNAMIC_IN, DYNAMIC_OUT }
 
 func _ready():
 	#init this node for addon
-	add_theme_constant_override("margin_left", margin)
-	add_theme_constant_override("margin_right", margin)
-	add_theme_constant_override("margin_top", margin)
-	add_theme_constant_override("margin_bottom", margin)
+	_update_margin()
 	
 	#Create scene for addon
 	_outline = TextureRect.new()
@@ -62,6 +62,12 @@ func _ready():
 	
 	if not DisplayServer.is_touchscreen_available() and visibility_mode == EVisibilityMode.TOUCHSCREEN_ONLY:
 		hide()
+
+func _update_margin():
+	add_theme_constant_override("margin_left", margin)
+	add_theme_constant_override("margin_right", margin)
+	add_theme_constant_override("margin_top", margin)
+	add_theme_constant_override("margin_bottom", margin)
 
 func _reset_point():
 	_point.set_position(_point.get_rect().size / 2)
