@@ -101,8 +101,6 @@ func _set_point(position: Vector2):
 	
 	_point.set_global_position(target)
 
-#Need to set axis to something other than "Joy Axis Invalid", or get following error
-#Condition "p_axis < JoyAxis::LEFT_X || p_axis > JoyAxis::MAX" is true.
 func _send_input_event(orientation: Orientation, strength: float):
 	var joystick_event = InputEventJoypadMotion.new()
 	joystick_event.axis = joy_axis_horizontal if orientation == HORIZONTAL else joy_axis_vertical #JOY_AXIS_LEFT_X

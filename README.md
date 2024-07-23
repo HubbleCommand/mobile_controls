@@ -6,6 +6,9 @@ Some mobile virtual controls for Godot 4.x.
 ## Virtual Joystick
 Virtual Joystick for use on touchscreens to emulate a controller joystick.
 
+If you see the following error in your logs, it most likely means that you need to set axis to something other than "Joy Axis Invalid":
+> Condition "p_axis < JoyAxis::LEFT_X || p_axis > JoyAxis::MAX" is true.
+
 ## Screen Gestures
 Screenspaces / canvas gesture detector. Reports pan, rotate, and scale gestures.
 
