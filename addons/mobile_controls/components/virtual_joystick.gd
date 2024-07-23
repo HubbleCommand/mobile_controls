@@ -70,7 +70,7 @@ func _update_margin():
 	add_theme_constant_override("margin_bottom", margin)
 
 func _reset_point():
-	_point.set_position(_point.get_rect().size / 2)
+	_point.set_position((_outline.get_rect().size / 2) - (_point.get_rect().size / 2))
 
 #TODO fix scaling
 func _set_point(position: Vector2):
