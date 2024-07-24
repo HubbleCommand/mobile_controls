@@ -75,24 +75,24 @@ func _reset_point():
 #TODO fix scaling
 func _set_point(position: Vector2):
 	var limit = _outline.get_rect().size.x
-	var length
-	#need global to compare to mouse position #outline.get_rect().position
-	var center = _outline.global_position + (_outline.get_rect().size / 2)
+	
+	#Length seems to only really work if the point is half the size of the outline...
+	var radius_max = (_outline.get_rect().size.x / 2)
 	var offset = - (_point.get_rect().size / 2)
+	#need global to compare to mouse position #outline.get_rect().position
+	# canvas items don't have the same helpers as Node2D / Node3D for converting between local and global space
+	var center = _outline.global_position + (_outline.get_rect().size / 2)
 	
 	if pointer_constraint_mode == EPointerConstraintMode.DYNAMIC_IN:
-		limit -= (_point.get_rect().size.x) #- (point.get_rect().size.x / 2)
-		length = _outline.get_rect().size.x - (_point.get_rect().size.x) - (_point.get_rect().size.x / 2)
-	
-	elif pointer_constraint_mode == EPointerConstraintMode.DYNAMIC_OUT:
-		length = _outline.get_rect().size.x - (_point.get_rect().size.x)
+		limit -= _point.get_rect().size.x
+		radius_max -= _point.get_rect().size.x / 2
 	
 	var target
 	var direction = center.direction_to(position)
 	if position.distance_to(center) < limit / 2:
 		target = position - _point.get_rect().size / 2
 	else:
-		target = (direction * length) + center + offset
+		target = (direction * radius_max) + center + offset
 	
 	var radius = _outline.get_rect().size.x / 2
 	var action_target = (direction * (position.distance_to(center) / radius))
