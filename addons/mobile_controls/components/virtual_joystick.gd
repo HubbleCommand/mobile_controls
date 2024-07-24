@@ -9,6 +9,9 @@ class_name VirtualJoystick
 		margin = value
 		_update_margin()
 
+## If keep tracking user input once it has exited this Control 
+@export var track_outside: bool = true
+
 @export var texture_outline: Texture2D:
 	set(value):
 		texture_outline = value
