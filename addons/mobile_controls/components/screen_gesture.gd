@@ -145,7 +145,7 @@ func _ready():
 	tmr_long_press.wait_time = long_press_timeout / 1000
 	
 	container.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_KEEP_WIDTH, 0.0)
-	if floating_joystick_node:
+	if floating_joystick_node and not Engine.is_editor_hint():
 		_enable_fvj(false)
 
 func _toggle_touchscreen_mode():
