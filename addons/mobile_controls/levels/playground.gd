@@ -19,10 +19,12 @@ func _on_screen_gesture_long_press_gesture(gesture):
 
 func _on_screen_gesture_pan_gesture(position, direction):
 	_print_received_gesture("pan")
+	$Camera2D.position -= direction#.normalized()
 
 
 func _on_screen_gesture_rotate_gesture(position, direction):
 	_print_received_gesture("rotate")
+	$Camera2D.rotate(direction.angle() / 100)
 
 
 func _on_screen_gesture_scale_gesture(position, strength):

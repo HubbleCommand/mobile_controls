@@ -129,3 +129,10 @@ texture_point = ExtResource("12_c85hy")
 mark_input_as_handled = true
 joy_axis_horizontal = 2
 joy_axis_vertical = 3
+
+[connection signal="double_tap_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_double_tap_gesture"]
+[connection signal="gesture_end" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_gesture_end"]
+[connection signal="long_press_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_long_press_gesture"]
+[connection signal="pan_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_pan_gesture"]
+[connection signal="rotate_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_rotate_gesture"]
+[connection signal="scale_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_scale_gesture"]
