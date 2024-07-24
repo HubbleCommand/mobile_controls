@@ -126,9 +126,6 @@ func _input(event):
 				_switch_point_texture()
 				if "index" in event:
 					_input_pointer_index = event.index
-			#else:
-			#	_reset_point()
-			#	_down = false
 		else :
 			if "index" in event:
 				if event.index != _input_pointer_index:
@@ -140,6 +137,11 @@ func _input(event):
 	
 	elif event is InputEventScreenDrag or event is InputEventMouseMotion:
 		if not _down:
+			return
+		
+		if not _event_in_area(event.position) and not track_outside:
+			_reset_point()
+			_down = false
 			return
 		
 		if _input_pointer_index >= 0 and "index" in event:
