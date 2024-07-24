@@ -44,10 +44,6 @@ enum EPointerConstraintMode { DYNAMIC_IN, DYNAMIC_OUT }
 
 
 func _ready():
-	#init this node for addon
-	_update_margin()
-	
-	#Create scene for addon
 	_outline = TextureRect.new()
 	_outline.name = "Outline"
 	_outline.texture = texture_outline
@@ -58,6 +54,7 @@ func _ready():
 	
 	_outline.add_child(_point, InternalMode.INTERNAL_MODE_BACK)
 	add_child(_outline, InternalMode.INTERNAL_MODE_BACK)
+	_update_margin()
 	_reset_point()
 	
 	if not DisplayServer.is_touchscreen_available() and visibility_mode == EVisibilityMode.TOUCHSCREEN_ONLY:
