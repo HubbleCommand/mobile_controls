@@ -191,6 +191,7 @@ func _gui_input(event):
 						_enable_fvj(false)
 				tmr_long_press.stop()
 		"InputEventMouseMotion":
+			tmr_long_press.stop()
 			if !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) && Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 				_pring_gesture_debug("rotate", "mouse")
 				if consider_input_gesture_as_handled: get_viewport().set_input_as_handled()
