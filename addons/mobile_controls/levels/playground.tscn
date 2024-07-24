@@ -1,18 +1,47 @@
-[gd_scene load_steps=9 format=3 uid="uid://bse0op3nfknuk"]
+[gd_scene load_steps=13 format=3 uid="uid://bse0op3nfknuk"]
 
 [ext_resource type="Script" path="res://addons/mobile_controls/levels/playground.gd" id="1_w5xh7"]
 [ext_resource type="Script" path="res://addons/mobile_controls/components/screen_gesture.gd" id="2_0gyiu"]
 [ext_resource type="Script" path="res://addons/mobile_controls/components/virtual_joystick.gd" id="2_77qef"]
-[ext_resource type="Texture2D" uid="uid://eeqyd0dcds4h" path="res://addons/mobile_controls/icons/joystick_base_outline.png" id="3_0n788"]
 [ext_resource type="Texture2D" uid="uid://c6rnxjyyev50s" path="res://addons/mobile_controls/icons/pan_icon.svg" id="3_juxig"]
 [ext_resource type="Texture2D" uid="uid://bljx7ho1q7i11" path="res://addons/mobile_controls/icons/rotate_icon.svg" id="4_c7os8"]
-[ext_resource type="Texture2D" uid="uid://bscj3s5ruyy3c" path="res://addons/mobile_controls/icons/joystick_tip_arrows.png" id="4_jgydy"]
-[ext_resource type="Texture2D" uid="uid://bmrr0ugsw5h3q" path="res://addons/mobile_controls/icons/joystick_tip.png" id="6_sd6op"]
+[ext_resource type="Texture2D" uid="uid://k123uewq3jws" path="res://addons/mobile_controls/icons/lineLight06.png" id="8_hhrnb"]
+[ext_resource type="Texture2D" uid="uid://dy8sfbmxbsq03" path="res://addons/mobile_controls/icons/lineLight00.png" id="9_3yqvq"]
+[ext_resource type="Texture2D" uid="uid://cr2bq2vdx0shr" path="res://addons/mobile_controls/icons/ScreenGesture.svg" id="9_27iaq"]
+[ext_resource type="Texture2D" uid="uid://x70adpnsrm56" path="res://addons/mobile_controls/icons/lineLight09.png" id="10_l5fti"]
+[ext_resource type="Texture2D" uid="uid://bbouj3j8i424y" path="res://addons/mobile_controls/icons/VirtualJoystick.svg" id="10_wcmuc"]
+[ext_resource type="Texture2D" uid="uid://cxppohfsvca7a" path="res://addons/mobile_controls/icons/lineLight10.png" id="11_tis1p"]
+[ext_resource type="Texture2D" uid="uid://c0yf1ei86dj0s" path="res://addons/mobile_controls/icons/lineLight49.png" id="12_c85hy"]
 
 [node name="Playground" type="Node2D"]
 script = ExtResource("1_w5xh7")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+ignore_rotation = false
+
+[node name="ScreenGesture" type="Sprite2D" parent="."]
+position = Vector2(292, 149)
+scale = Vector2(6.42, 5.74286)
+texture = ExtResource("9_27iaq")
+
+[node name="VirtualJoystick2" type="Sprite2D" parent="."]
+position = Vector2(-37, 30)
+scale = Vector2(4.78889, 4.34615)
+texture = ExtResource("10_wcmuc")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_hhrnb")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 15
@@ -43,28 +72,51 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 script = ExtResource("2_77qef")
-texture_outline = ExtResource("3_0n788")
-texture_point = ExtResource("6_sd6op")
+texture_outline = ExtResource("10_l5fti")
+texture_point = ExtResource("12_c85hy")
 joy_axis_horizontal = 0
 joy_axis_vertical = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+[node name="DynamicOut Tests" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
 
-[node name="LeftVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests"]
 layout_mode = 2
-size_flags_horizontal = 2
+alignment_horizontal = 0
+
+[node name="LeftVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests/AspectRatioContainer"]
+layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 script = ExtResource("2_77qef")
-texture_outline = ExtResource("3_0n788")
-texture_point = ExtResource("4_jgydy")
+input_region_shape = 1
+texture_outline = ExtResource("8_hhrnb")
+texture_point = ExtResource("9_3yqvq")
+pointer_constraint_mode = 1
 joy_axis_horizontal = 0
 joy_axis_vertical = 1
 
-[node name="RightVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="VirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests/AspectRatioContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("2_77qef")
+texture_outline = ExtResource("10_l5fti")
+texture_point = ExtResource("11_tis1p")
+pointer_constraint_mode = 1
+joy_axis_horizontal = 4
+joy_axis_vertical = 5
+
+[node name="RightVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/margin_left = 20
@@ -72,9 +124,8 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 script = ExtResource("2_77qef")
-texture_outline = ExtResource("3_0n788")
-texture_point = ExtResource("6_sd6op")
-pointer_constraint_mode = 1
+texture_outline = ExtResource("10_l5fti")
+texture_point = ExtResource("12_c85hy")
 mark_input_as_handled = true
 joy_axis_horizontal = 2
 joy_axis_vertical = 3

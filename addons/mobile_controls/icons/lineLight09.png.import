@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://eeqyd0dcds4h"
-path="res://.godot/imported/joystick_base_outline.png-cffd7a97b98d0a0b4601ed3567aa4e92.ctex"
+uid="uid://x70adpnsrm56"
+path="res://.godot/imported/lineLight09.png-390135cdd2dacc814cc384c359d90425.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/mobile_controls/icons/joystick_base_outline.png"
-dest_files=["res://.godot/imported/joystick_base_outline.png-cffd7a97b98d0a0b4601ed3567aa4e92.ctex"]
+source_file="res://addons/mobile_controls/icons/lineLight09.png"
+dest_files=["res://.godot/imported/lineLight09.png-390135cdd2dacc814cc384c359d90425.ctex"]
 
 [params]
 
