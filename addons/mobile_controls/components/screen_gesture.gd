@@ -194,11 +194,11 @@ func _gui_input(event):
 			if !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) && Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 				_pring_gesture_debug("rotate", "mouse")
 				if consider_input_gesture_as_handled: get_viewport().set_input_as_handled()
-				rotate_gesture.emit(event.position, event.velocity)
+				rotate_gesture.emit(event.position, event.relative)
 			if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) && !Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 				_pring_gesture_debug("pan", "mouse")
 				if consider_input_gesture_as_handled: get_viewport().set_input_as_handled()
-				pan_gesture.emit(event.position, event.velocity)
+				pan_gesture.emit(event.position, event.relative)
 	# Screen part
 	# I don't really like how when Magnify is triggered, so is the pan...
 	# It might be better to just have a toggle button to switch between Pan & Rotate
