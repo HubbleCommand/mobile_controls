@@ -1,10 +1,16 @@
 # Mobile Controls
 Some mobile virtual controls for Godot 4.x.
 
+Sample textures are from [Kenney](https://www.kenney.nl/assets/onscreen-controls).
+
+Related asset: https://godotengine.org/asset-library/asset/1787
+
 ![virtual joystick](https://github.com/HubbleCommand/mobile_controls/blob/master/media/joystick.gif?raw=true)
 
 ## Virtual Joystick
 Virtual Joystick for use on touchscreens to emulate a controller joystick.
+
+The texture for the point / inner texture MUST be smaller than the outline texture.
 
 If you see the following error in your logs, it most likely means that you need to set axis to something other than "Joy Axis Invalid":
 > Condition "p_axis < JoyAxis::LEFT_X || p_axis > JoyAxis::MAX" is true.
@@ -27,4 +33,3 @@ and enable "Pan and Scale Gestures".
 ![project settings](https://github.com/HubbleCommand/mobile_controls/blob/master/media/project_settings.png?raw=true)
 
 For more details, read the corresponding [documentation](https://docs.godotengine.org/en/stable/classes/class_projectsettings.html).
-
