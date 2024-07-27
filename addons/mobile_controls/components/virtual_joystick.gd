@@ -57,7 +57,7 @@ func _ready():
 	_outline.add_child(_point, InternalMode.INTERNAL_MODE_BACK)
 	add_child(_outline, InternalMode.INTERNAL_MODE_BACK)
 	_update_margin()
-	_reset_point()
+	_reset_point(false)
 	
 	if not DisplayServer.is_touchscreen_available() and visibility_mode == EVisibilityMode.TOUCHSCREEN_ONLY:
 		hide()
@@ -68,9 +68,12 @@ func _update_margin():
 	add_theme_constant_override("margin_top", margin)
 	add_theme_constant_override("margin_bottom", margin)
 
-func _reset_point():
+func _reset_point(send: bool = true):
 	_point.set_position((_outline.get_rect().size / 2) - (_point.get_rect().size / 2))
 	
+	if send:
+		_send_input_event(HORIZONTAL, 0)
+		_send_input_event(VERTICAL, 0)
 
 func _set_point(position: Vector2):
 	var limit = _outline.get_rect().size.x
