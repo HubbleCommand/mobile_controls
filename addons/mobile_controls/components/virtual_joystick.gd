@@ -95,7 +95,8 @@ func _set_point(position: Vector2):
 		target = (direction * radius_max) + center + offset
 	
 	var radius = _outline.get_rect().size.x / 2
-	var action_target = (direction * (position.distance_to(center) / radius))
+	#re-fit into [-1, 1] range for input event
+	var action_target = (direction * ((target + _point.get_rect().size / 2).distance_to(center) / radius_max))
 	_send_input_event(HORIZONTAL, action_target.x)
 	_send_input_event(VERTICAL, action_target.y)
 	
