@@ -1,17 +1,17 @@
-[gd_scene load_steps=13 format=3 uid="uid://bse0op3nfknuk"]
+[gd_scene load_steps=12 format=3 uid="uid://bse0op3nfknuk"]
 
 [ext_resource type="Script" path="res://addons/mobile_controls/levels/playground.gd" id="1_w5xh7"]
 [ext_resource type="Script" path="res://addons/mobile_controls/components/screen_gesture.gd" id="2_0gyiu"]
 [ext_resource type="Script" path="res://addons/mobile_controls/components/virtual_joystick.gd" id="2_77qef"]
 [ext_resource type="Texture2D" uid="uid://c6rnxjyyev50s" path="res://addons/mobile_controls/icons/pan_icon.svg" id="3_juxig"]
 [ext_resource type="Texture2D" uid="uid://bljx7ho1q7i11" path="res://addons/mobile_controls/icons/rotate_icon.svg" id="4_c7os8"]
-[ext_resource type="Texture2D" uid="uid://k123uewq3jws" path="res://addons/mobile_controls/icons/lineLight06.png" id="8_hhrnb"]
-[ext_resource type="Texture2D" uid="uid://dy8sfbmxbsq03" path="res://addons/mobile_controls/icons/lineLight00.png" id="9_3yqvq"]
 [ext_resource type="Texture2D" uid="uid://cr2bq2vdx0shr" path="res://addons/mobile_controls/icons/ScreenGesture.svg" id="9_27iaq"]
 [ext_resource type="Texture2D" uid="uid://x70adpnsrm56" path="res://addons/mobile_controls/icons/lineLight09.png" id="10_l5fti"]
 [ext_resource type="Texture2D" uid="uid://bbouj3j8i424y" path="res://addons/mobile_controls/icons/VirtualJoystick.svg" id="10_wcmuc"]
 [ext_resource type="Texture2D" uid="uid://cxppohfsvca7a" path="res://addons/mobile_controls/icons/lineLight10.png" id="11_tis1p"]
 [ext_resource type="Texture2D" uid="uid://c0yf1ei86dj0s" path="res://addons/mobile_controls/icons/lineLight49.png" id="12_c85hy"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dv6x7"]
 
 [node name="Playground" type="Node2D"]
 script = ExtResource("1_w5xh7")
@@ -39,7 +39,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("8_hhrnb")
+texture = SubResource("CompressedTexture2D_dv6x7")
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -58,12 +58,12 @@ layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_0gyiu")
 floating_joystick_enabled = true
-floating_joystick_node = NodePath("VirtualJoystick")
+floating_joystick_node = NodePath("FloatingVirtualJoystick")
 mode_button_minimum_size = Vector2i(50, 50)
 pan_icon = ExtResource("3_juxig")
 rotate_icon = ExtResource("4_c7os8")
 
-[node name="VirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/ScreenGesture"]
+[node name="FloatingVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/ScreenGesture"]
 process_mode = 4
 modulate = Color(1, 1, 1, 0)
 layout_mode = 0
@@ -87,7 +87,7 @@ layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
 
-[node name="CenterVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests/AspectRatioContainer2"]
+[node name="LeftVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests/AspectRatioContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
@@ -121,7 +121,6 @@ offset_bottom = 85.0
 [node name="OptionButton" type="OptionButton" parent="CanvasLayer/Joystick Readout"]
 layout_mode = 2
 selected = 0
-allow_reselect = true
 item_count = 2
 popup/item_0/text = "abc"
 popup/item_1/text = "123"
@@ -139,3 +138,4 @@ layout_mode = 2
 [connection signal="pan_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_pan_gesture"]
 [connection signal="rotate_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_rotate_gesture"]
 [connection signal="scale_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_scale_gesture"]
+[connection signal="item_selected" from="CanvasLayer/Joystick Readout/OptionButton" to="." method="_on_option_button_item_selected"]
