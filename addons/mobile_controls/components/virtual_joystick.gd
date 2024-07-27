@@ -11,10 +11,6 @@ class_name VirtualJoystick
 ## If keep tracking user input once it has exited this Control 
 @export var track_outside: bool = true
 
-## If shape is round or square (affects limits of point)
-#enum ERegionShape {ROUND, SQUARE}
-#@export var input_region_shape: ERegionShape = ERegionShape.ROUND
-
 @export var texture_outline: Texture2D:
 	set(value):
 		texture_outline = value
@@ -74,24 +70,7 @@ func _update_margin():
 
 func _reset_point():
 	_point.set_position((_outline.get_rect().size / 2) - (_point.get_rect().size / 2))
-
-func _set_point_square(position: Vector2):
-	var region = _outline.get_rect()
-	region.position = _outline.global_position
-	if pointer_constraint_mode == EPointerConstraintMode.DYNAMIC_IN:
-		region.size -= _point.get_rect().size
-		region.position += _point.get_rect().size / 2
 	
-	var target
-	if not region.has_point(position):
-		var intersection = Geometry2DIntersectionExtensions.segment_intersects_rect(region.get_center(), position, region, true)
-		
-		if intersection :
-			target = intersection - _point.get_rect().size / 2
-	else:
-		target = position - _point.get_rect().size / 2
-		
-	_point.set_global_position(target)
 
 func _set_point(position: Vector2):
 	var limit = _outline.get_rect().size.x
@@ -127,11 +106,6 @@ func _send_input_event(orientation: Orientation, strength: float):
 	Input.parse_input_event(joystick_event)
 
 func _event_in_area(event_position: Vector2) -> bool:
-	#if input_region_shape == ERegionShape.SQUARE:
-	#	var rect = _outline.get_rect()
-	#	rect.position = _outline.global_position #TODO += or just =?
-	#	return rect.has_point(event_position)
-
 	var width = _outline.get_rect().size.x
 	#need global to compare to mouse position #outline.get_rect().position
 	# cannot use relative position as described below

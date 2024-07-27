@@ -84,25 +84,7 @@ layout_mode = 2
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests"]
 layout_mode = 2
-alignment_horizontal = 0
-
-[node name="LeftVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests/AspectRatioContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-script = ExtResource("2_77qef")
-input_region_shape = 1
-texture_outline = ExtResource("8_hhrnb")
-texture_point = ExtResource("9_3yqvq")
-pointer_constraint_mode = 1
-joy_axis_horizontal = 0
-joy_axis_vertical = 1
-
-[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests"]
-layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 2
 size_flags_vertical = 4
 
 [node name="CenterVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests/AspectRatioContainer2"]
