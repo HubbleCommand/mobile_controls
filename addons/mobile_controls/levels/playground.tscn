@@ -17,6 +17,7 @@
 script = ExtResource("1_w5xh7")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visible = false
 ignore_rotation = false
 
 [node name="ScreenGesture" type="Sprite2D" parent="."]
@@ -32,6 +33,7 @@ texture = ExtResource("10_wcmuc")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -103,7 +105,7 @@ layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 
-[node name="VirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests/AspectRatioContainer2"]
+[node name="CenterVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/DynamicOut Tests/AspectRatioContainer2"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
@@ -129,6 +131,25 @@ texture_point = ExtResource("12_c85hy")
 mark_input_as_handled = true
 joy_axis_horizontal = 2
 joy_axis_vertical = 3
+
+[node name="Joystick Readout" type="VBoxContainer" parent="CanvasLayer"]
+offset_right = 60.0
+offset_bottom = 85.0
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/Joystick Readout"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "abc"
+popup/item_1/text = "123"
+popup/item_1/id = 1
+
+[node name="XLabel" type="Label" parent="CanvasLayer/Joystick Readout"]
+layout_mode = 2
+
+[node name="YLabel" type="Label" parent="CanvasLayer/Joystick Readout"]
+layout_mode = 2
 
 [connection signal="double_tap_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_double_tap_gesture"]
 [connection signal="gesture_end" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_gesture_end"]
