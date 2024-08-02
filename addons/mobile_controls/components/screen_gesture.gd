@@ -46,12 +46,7 @@ class_name ScreenGesture
 
 #TODO export all texture variants for TextureButton
 #TODO USE PATH OF BUTTONS like with FloatingVirtualJoystick
-@export var pan_icon: Texture2D = load("res://addons/mobile_controls/icons/pan_icon.svg"):
-	set(value):
-		pan_icon = value
-		if not is_node_ready():
-			await ready
-		btn_mode.texture = pan_icon
+@export var pan_icon: Texture2D = load("res://addons/mobile_controls/icons/pan_icon.svg")
 @export var rotate_icon: Texture2D = load("res://addons/mobile_controls/icons/rotate_icon.svg")
 
 
