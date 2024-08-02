@@ -14,21 +14,16 @@ class_name VirtualJoystick
 @export var texture_outline: Texture2D:
 	set(value):
 		texture_outline = value
-		if Engine.is_editor_hint():
-			_outline.texture = value
-			notify_property_list_changed()
+		if not is_node_ready():
+			await ready
+		_outline.texture = value
 @export var texture_point: Texture2D:
 	set(value):
 		texture_point = value
-		if Engine.is_editor_hint():
-			_point.texture = value
-			notify_property_list_changed()
+		if not is_node_ready():
+			await ready
+		_point.texture = value
 @export var texture_point_pressed: Texture2D
-
-var _outline : TextureRect
-var _point: TextureRect
-var _input_pointer_index = -1	#"pointer" index like in Android with multiple pointers
-var _down := false				#Used to handle between TOUCH DOWN & PAN /DRAG events
 
 enum EVisibilityMode { ALWAYS, TOUCHSCREEN_ONLY }
 enum EPointerConstraintMode { DYNAMIC_IN, DYNAMIC_OUT }
@@ -37,12 +32,13 @@ enum EPointerConstraintMode { DYNAMIC_IN, DYNAMIC_OUT }
 @export var pointer_constraint_mode := EPointerConstraintMode.DYNAMIC_IN
 @export var mark_input_as_handled = false
 
-#TODO might be interesting to use InputEventJoypadMotion's from _input for UI feedback
-#enum EFeedbackMode { NONE, JOYSTICK }
-#@export var feedback_mode := EFeedbackMode.JOYSTICK
-
 @export var joy_axis_horizontal : JoyAxis = JOY_AXIS_INVALID
 @export var joy_axis_vertical : JoyAxis = JOY_AXIS_INVALID
+
+var _outline : TextureRect
+var _point: TextureRect
+var _input_pointer_index = -1	#"pointer" index like in Android with multiple pointers
+var _down := false				#Used to handle between TOUCH DOWN & PAN /DRAG events
 
 
 func _ready():
@@ -79,8 +75,6 @@ func _set_point(position: Vector2):
 	var limit = _outline.get_rect().size.x
 	var radius_max = (_outline.get_rect().size.x / 2)
 	var offset = - (_point.get_rect().size / 2)
-	#need global to compare to mouse position #outline.get_rect().position
-	# canvas items don't have the same helpers as Node2D / Node3D for converting between local and global space
 	var center = _outline.global_position + (_outline.get_rect().size / 2)
 	
 	if pointer_constraint_mode == EPointerConstraintMode.DYNAMIC_IN:
@@ -104,25 +98,20 @@ func _set_point(position: Vector2):
 
 func _send_input_event(orientation: Orientation, strength: float):
 	var joystick_event = InputEventJoypadMotion.new()
-	joystick_event.axis = joy_axis_horizontal if orientation == HORIZONTAL else joy_axis_vertical #JOY_AXIS_LEFT_X
-	joystick_event.axis_value = strength #length / limit
+	joystick_event.axis = joy_axis_horizontal if orientation == HORIZONTAL else joy_axis_vertical
+	joystick_event.axis_value = strength
 	Input.parse_input_event(joystick_event)
 
 func _event_in_area(event_position: Vector2) -> bool:
 	var width = _outline.get_rect().size.x
-	#need global to compare to mouse position #outline.get_rect().position
-	# cannot use relative position as described below
-	# https://docs.godotengine.org/en/latest/classes/class_inputeventmouse.html#class-inputeventmouse-property-position
 	var center = _outline.global_position + (_outline.get_rect().size / 2)	
 	return event_position.distance_to(center) <= width / 2
 
-## Fixes issue when Floating, will accept input events properly
-## FOR INTERNAL PACKAGE USE ONLY, do not use unless you know what you are doing!
+## FOR INTERNAL PACKAGE USE ONLY, fixes issue when Floating, will accept input events properly
 func accept_next():
 	_down = true
 	_switch_point_texture()
 
-# We don't want to use gui_input as we still want gestures outside of this control
 func _input(event):
 	if event is InputEventScreenTouch or event is InputEventMouseButton:
 		if event.is_pressed():
