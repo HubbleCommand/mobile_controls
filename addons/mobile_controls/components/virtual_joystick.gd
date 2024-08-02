@@ -72,6 +72,7 @@ func _reset_point(send: bool = true):
 		_send_input_event(VERTICAL, 0)
 
 func _set_point(position: Vector2):
+	if mark_input_as_handled: get_viewport().set_input_as_handled()
 	var limit = _outline.get_rect().size.x
 	var radius_max = (_outline.get_rect().size.x / 2)
 	var offset = - (_point.get_rect().size / 2)
