@@ -22,10 +22,6 @@ func _input(event: InputEvent) -> void:
 			$"CanvasLayer/Joystick Readout/XLabel".text = str(event.axis_value)
 		elif event.axis == joysticks[dropdown.selected].joy_axis_vertical:
 			$"CanvasLayer/Joystick Readout/YLabel".text = str(event.axis_value)
-	#if event.axis == JoyAxis.JOY_AXIS_LEFT_X || event.axis == JoyAxis.JOY_AXIS_RIGHT_X || event.axis == JoyAxis.JOY_AXIS_TRIGGER_LEFT :
-		
-	#else:
-		
 
 
 func _print_received_gesture(gesture: String):
