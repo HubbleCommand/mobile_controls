@@ -37,30 +37,22 @@ class_name ScreenGesture
 		if btn_mode:
 			btn_mode.custom_minimum_size = value
 			btn_mode.get_parent().set_anchors_preset(PRESET_TOP_RIGHT)
-		if Engine.is_editor_hint():
-			notify_property_list_changed()
 
 @export var region_color : Color = Color8(255, 255, 255, 30):
 	set(value):
 		region_color = value
 		if clr_rct:
 			clr_rct.color = value
-		if Engine.is_editor_hint():
-			notify_property_list_changed()
 
 #TODO export all texture variants for TextureButton
+#TODO USE PATH OF BUTTONS like with FloatingVirtualJoystick
 @export var pan_icon: Texture2D = load("res://addons/mobile_controls/icons/pan_icon.svg"):
 	set(value):
 		pan_icon = value
-		if Engine.is_editor_hint():
-			btn_mode.texture = value
-			notify_property_list_changed()
-@export var rotate_icon: Texture2D = load("res://addons/mobile_controls/icons/rotate_icon.svg"):
-	set(value):
-		rotate_icon = value
-		if Engine.is_editor_hint():
-			btn_mode.texture = value
-			notify_property_list_changed()
+		if not is_node_ready():
+			await ready
+		btn_mode.texture = pan_icon
+@export var rotate_icon: Texture2D = load("res://addons/mobile_controls/icons/rotate_icon.svg")
 
 
 @export_group("Debug")
@@ -158,7 +150,6 @@ func _toggle_touchscreen_mode():
 		resource = pan_icon
 	btn_mode.texture_normal = resource
 
-# We use _gui_input instead of _input to only consider events within this control
 func _gui_input(event):
 	var emulate_touch_from_mouse = ProjectSettings.get_setting("input_devices/pointing/emulate_touch_from_mouse")
 	var emulate_mouse_from_touch = ProjectSettings.get_setting("input_devices/pointing/emulate_mouse_from_touch")	#Default is true
@@ -247,7 +238,8 @@ func _gui_input(event):
 		else:
 			rotate_gesture.emit(event.position, event.relative)
 
-#Only for mouse, screen already has double tap, but still should work for screen
+## TODO remove this, it appears all inputs have double click detection (including mouse, making this not great
+##	as it changes system-defined behavior)
 func _detect_double_tap(last_event: Pointer, event: InputEvent) -> bool:
 	if last_event != null and state.pointers == 1 \
 		and Time.get_ticks_msec() - last_event.timestamp < double_tap_timeout \
