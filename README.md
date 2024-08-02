@@ -3,7 +3,7 @@ Some mobile virtual controls for Godot 4.x.
 
 Sample textures are from [Kenney](https://www.kenney.nl/assets/onscreen-controls).
 
-Related asset: https://godotengine.org/asset-library/asset/1787
+[This asset](https://godotengine.org/asset-library/asset/1787) exists, but I required a few more features.
 
 ![virtual joystick](https://github.com/HubbleCommand/mobile_controls/blob/master/media/joystick.gif?raw=true)
 
