@@ -24,9 +24,8 @@ class_name ScreenGesture
 @export var gesture_rotate_enabled: bool = true
 
 @export_subgroup("Floating Joystick")
-## Long presses will enable a floating joystick at the location, until the pointer is risen
-@export var floating_joystick_enabled: bool = false
 #https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_exports.html#nodes
+## Long presses will enable a floating joystick at the location, until the pointer is risen
 ## Path to the VirtualJoystick node to use
 @export var floating_joystick_node: VirtualJoystick
 
