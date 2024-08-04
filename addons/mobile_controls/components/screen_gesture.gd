@@ -248,7 +248,7 @@ func _long_press_timeout():
 	if state.pointers == 1:
 		_pring_gesture_debug("long press")
 		#TODO determine how to do this...
-		if floating_joystick_enabled:
+		if floating_joystick_node:
 			_pring_gesture_debug("handling floating VirtualJoystick")
 			_enable_fvj(true)
 			floating_joystick_node.position = Vector2(
