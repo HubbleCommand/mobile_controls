@@ -250,6 +250,7 @@ func _gui_input(event):
 			double_tap_gesture.emit(event.position)
 			#tmr_long_press.stop()
 	elif event is InputEventScreenDrag:
+		tmr_long_press.stop()
 		if state.tscreen_mode == ETouchScreenMode.PAN:
 			pan_gesture.emit(event.position, event.relative)
 		else:
