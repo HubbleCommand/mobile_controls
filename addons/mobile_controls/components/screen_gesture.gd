@@ -143,10 +143,33 @@ func _toggle_touchscreen_mode():
 		state.tscreen_mode = ETouchScreenMode.PAN
 		resource = pan_icon
 	btn_mode.texture_normal = resource
+var _feedback_position = null
+
+func _draw() -> void:
+	if _feedback_position is Vector2:
+		draw_circle(_feedback_position, 20.0, Color.WHITE, true)
+
+func _feedback(event: InputEvent):
+	var is_pressed = event.is_pressed()
+	#https://docs.godotengine.org/en/stable/classes/class_inputevent.html#class-inputevent-method-is-pressed
+	if event is InputEventMouseMotion:
+		#https://forum.godotengine.org/t/godot-mouse-input-pressure/83763
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
+			is_pressed = true
+	if event is InputEventScreenDrag:
+		is_pressed = event.pressure > 0
+	if event.position and is_pressed:
+		_feedback_position = event.position
+	if not is_pressed:
+		_feedback_position = null
+	queue_redraw()
 
 func _gui_input(event):
 	var emulate_touch_from_mouse = ProjectSettings.get_setting("input_devices/pointing/emulate_touch_from_mouse")
 	var emulate_mouse_from_touch = ProjectSettings.get_setting("input_devices/pointing/emulate_mouse_from_touch")	#Default is true
+	
+	if show_ui_feedback:
+		_feedback(event)
 	
 	match event.get_class():
 		"InputEventMouseButton":
