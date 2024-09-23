@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bse0op3nfknuk"]
+[gd_scene load_steps=14 format=3 uid="uid://bse0op3nfknuk"]
 
 [ext_resource type="Script" path="res://addons/mobile_controls/levels/playground.gd" id="1_w5xh7"]
 [ext_resource type="Script" path="res://addons/mobile_controls/components/screen_gesture.gd" id="2_0gyiu"]
@@ -6,7 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://c6rnxjyyev50s" path="res://addons/mobile_controls/icons/pan_icon.svg" id="3_juxig"]
 [ext_resource type="Texture2D" uid="uid://bljx7ho1q7i11" path="res://addons/mobile_controls/icons/rotate_icon.svg" id="4_c7os8"]
 [ext_resource type="Texture2D" uid="uid://cr2bq2vdx0shr" path="res://addons/mobile_controls/icons/ScreenGesture.svg" id="9_27iaq"]
+[ext_resource type="Script" path="res://addons/mobile_controls/components/texture_button_mobile.gd" id="10_675of"]
 [ext_resource type="Texture2D" uid="uid://x70adpnsrm56" path="res://addons/mobile_controls/icons/lineLight09.png" id="10_l5fti"]
+[ext_resource type="Texture2D" uid="uid://cek7vu0tg55v5" path="res://addons/mobile_controls/icons/pan_icon_pressed.svg" id="10_vqual"]
 [ext_resource type="Texture2D" uid="uid://bbouj3j8i424y" path="res://addons/mobile_controls/icons/VirtualJoystick.svg" id="10_wcmuc"]
 [ext_resource type="Texture2D" uid="uid://cxppohfsvca7a" path="res://addons/mobile_controls/icons/lineLight10.png" id="11_tis1p"]
 [ext_resource type="Texture2D" uid="uid://c0yf1ei86dj0s" path="res://addons/mobile_controls/icons/lineLight49.png" id="12_c85hy"]
@@ -53,15 +55,17 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="ScreenGesture" type="Control" parent="CanvasLayer/VBoxContainer" node_paths=PackedStringArray("floating_joystick_node")]
+[node name="ScreenGesture" type="Control" parent="CanvasLayer/VBoxContainer" node_paths=PackedStringArray("floating_joystick_node", "btn_pan", "btn_rotate", "btn_scale")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("2_0gyiu")
-floating_joystick_enabled = true
 floating_joystick_node = NodePath("FloatingVirtualJoystick")
-mode_button_minimum_size = Vector2i(50, 50)
-pan_icon = ExtResource("3_juxig")
-rotate_icon = ExtResource("4_c7os8")
+btn_pan = NodePath("MarginContainer/ToolboxContainer/TBtnPan")
+btn_rotate = NodePath("MarginContainer/ToolboxContainer/TBtnRotate")
+btn_scale = NodePath("MarginContainer/ToolboxContainer/TBtnScale")
+modulate_inactive = Color(0.627451, 0.603922, 1, 0.682353)
+show_ui_feedback = true
+print_debug_gestures = false
 
 [node name="FloatingVirtualJoystick" type="MarginContainer" parent="CanvasLayer/VBoxContainer/ScreenGesture"]
 process_mode = 4
@@ -78,6 +82,67 @@ texture_outline = ExtResource("10_l5fti")
 texture_point = ExtResource("12_c85hy")
 joy_axis_horizontal = 0
 joy_axis_vertical = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VBoxContainer/ScreenGesture"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ToolboxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer/ScreenGesture/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureButtonMobile_Pan" type="TextureButton" parent="CanvasLayer/VBoxContainer/ScreenGesture/MarginContainer/ToolboxContainer"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+texture_normal = ExtResource("3_juxig")
+texture_pressed = ExtResource("10_vqual")
+ignore_texture_size = true
+stretch_mode = 4
+script = ExtResource("10_675of")
+
+[node name="TSBtnPan" type="TouchScreenButton" parent="CanvasLayer/VBoxContainer/ScreenGesture/MarginContainer/ToolboxContainer/TextureButtonMobile_Pan"]
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("3_juxig")
+texture_pressed = ExtResource("10_vqual")
+visibility_mode = 1
+
+[node name="TBtnScale" type="TextureButton" parent="CanvasLayer/VBoxContainer/ScreenGesture/MarginContainer/ToolboxContainer"]
+layout_mode = 2
+
+[node name="TBtnRotate" type="TextureButton" parent="CanvasLayer/VBoxContainer/ScreenGesture/MarginContainer/ToolboxContainer"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 10
+texture_normal = ExtResource("4_c7os8")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="TBtnPan" type="TextureButton" parent="CanvasLayer/VBoxContainer/ScreenGesture/MarginContainer/ToolboxContainer"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 10
+texture_normal = ExtResource("3_juxig")
+texture_pressed = ExtResource("10_vqual")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="CanvasLayer/VBoxContainer/ScreenGesture/MarginContainer/ToolboxContainer"]
+position = Vector2(-379, 308)
+texture_normal = ExtResource("3_juxig")
+texture_pressed = ExtResource("10_vqual")
+
+[node name="TouchScreenButton2" type="TouchScreenButton" parent="CanvasLayer/VBoxContainer/ScreenGesture/MarginContainer/ToolboxContainer"]
+position = Vector2(-52, 219)
+texture_normal = ExtResource("4_c7os8")
+texture_pressed = ExtResource("10_vqual")
 
 [node name="DynamicOut Tests" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
@@ -114,11 +179,18 @@ mark_input_as_handled = true
 joy_axis_horizontal = 2
 joy_axis_vertical = 3
 
-[node name="Joystick Readout" type="VBoxContainer" parent="CanvasLayer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 offset_right = 60.0
 offset_bottom = 85.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node name="OptionButton" type="OptionButton" parent="CanvasLayer/Joystick Readout"]
+[node name="Joystick Readout" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/MarginContainer/Joystick Readout"]
 layout_mode = 2
 selected = 0
 item_count = 2
@@ -126,10 +198,10 @@ popup/item_0/text = "abc"
 popup/item_1/text = "123"
 popup/item_1/id = 1
 
-[node name="XLabel" type="Label" parent="CanvasLayer/Joystick Readout"]
+[node name="XLabel" type="Label" parent="CanvasLayer/MarginContainer/Joystick Readout"]
 layout_mode = 2
 
-[node name="YLabel" type="Label" parent="CanvasLayer/Joystick Readout"]
+[node name="YLabel" type="Label" parent="CanvasLayer/MarginContainer/Joystick Readout"]
 layout_mode = 2
 
 [connection signal="double_tap_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_double_tap_gesture"]
@@ -138,4 +210,4 @@ layout_mode = 2
 [connection signal="pan_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_pan_gesture"]
 [connection signal="rotate_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_rotate_gesture"]
 [connection signal="scale_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_scale_gesture"]
-[connection signal="item_selected" from="CanvasLayer/Joystick Readout/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="item_selected" from="CanvasLayer/MarginContainer/Joystick Readout/OptionButton" to="." method="_on_option_button_item_selected"]

@@ -5,7 +5,7 @@ extends Node2D
 	$"CanvasLayer/VBoxContainer/DynamicOut Tests/AspectRatioContainer/LeftVirtualJoystick",
 	$"CanvasLayer/VBoxContainer/DynamicOut Tests/RightVirtualJoystick"
 ]
-@onready var dropdown = $"CanvasLayer/Joystick Readout/OptionButton"
+@onready var dropdown = $"CanvasLayer/MarginContainer/Joystick Readout/OptionButton"
 
 func _ready() -> void:
 	dropdown.clear()
