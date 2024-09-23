@@ -17,6 +17,12 @@ class_name ScreenGesture
 ## Multiple gestures can be reported at once (i.e. scale and pan in the same gesture)
 @export var multi_gesture: bool = false
 
+@export var region_color : Color = Color8(255, 255, 255, 30):
+	set(value):
+		region_color = value
+		if clr_rct:
+			clr_rct.color = value
+
 ## Determines UI
 @export_subgroup("Gestures")
 @export var gesture_pan_enabled: bool = true
@@ -29,25 +35,13 @@ class_name ScreenGesture
 ## Path to the VirtualJoystick node to use
 @export var floating_joystick_node: VirtualJoystick
 
-@export_group("Textures")
-@export var mode_button_minimum_size : Vector2i:
-	set(value):
-		mode_button_minimum_size = value
-		if btn_mode:
-			btn_mode.custom_minimum_size = value
-			btn_mode.get_parent().set_anchors_preset(PRESET_TOP_RIGHT)
+@export_group("Mode Buttons")
+@export var btn_pan: TextureButton
+@export var btn_rotate: TextureButton
+@export var btn_scale: TextureButton
 
-@export var region_color : Color = Color8(255, 255, 255, 30):
-	set(value):
-		region_color = value
-		if clr_rct:
-			clr_rct.color = value
-
-#TODO export all texture variants for TextureButton
-#TODO USE PATH OF BUTTONS like with FloatingVirtualJoystick
-@export var pan_icon: Texture2D = load("res://addons/mobile_controls/icons/pan_icon.svg")
-@export var rotate_icon: Texture2D = load("res://addons/mobile_controls/icons/rotate_icon.svg")
-
+@export var modulate_active: Color = Color.WHITE
+@export var modulate_inactive: Color = Color.WHITE
 
 @export_group("Debug")
 ## Show UI feedback at pointer location
@@ -83,13 +77,22 @@ class ScreenGestureState:
 var state = ScreenGestureState.new()
 
 var tmr_long_press: Timer
-var btn_mode: TextureButton
 var clr_rct: ColorRect
 
 func _ready():
 	if touchscreen_only and not DisplayServer.is_touchscreen_available():
 		modulate = Color(1, 1, 1, 0)
 		process_mode = ProcessMode.PROCESS_MODE_DISABLED
+	
+	if btn_pan:
+		btn_pan.pressed.connect(_set_mode.bind(ETouchScreenMode.PAN))
+	if btn_rotate:
+		btn_rotate.pressed.connect(_set_mode.bind(ETouchScreenMode.ROTATE))
+	if btn_scale:
+		btn_scale.pressed.connect(_set_mode.bind(ETouchScreenMode.SCALE))
+	
+	if not Engine.is_editor_hint():
+		_set_mode(ETouchScreenMode.PAN)
 	
 	#Build for addon
 	tmr_long_press = Timer.new()
@@ -109,40 +112,23 @@ func _ready():
 	clr_rct.process_mode = Node.PROCESS_MODE_DISABLED
 	add_child(clr_rct)
 	
-	var container = MarginContainer.new()
-	container.name = "ButtonModeMarginContainer"
-	btn_mode = TextureButton.new()
-	btn_mode.name = "ButtonMode"
-	btn_mode.ignore_texture_size = true
-	btn_mode.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT
-	btn_mode.custom_minimum_size = mode_button_minimum_size
-	btn_mode.pressed.connect(_toggle_touchscreen_mode)
-	
-	var margin_value = 20
-	add_theme_constant_override("margin_top", margin_value)
-	add_theme_constant_override("margin_left", margin_value)
-	add_theme_constant_override("margin_bottom", margin_value)
-	add_theme_constant_override("margin_right", margin_value)
-	
-	add_child(container)
-	container.add_child(btn_mode)
-	_toggle_touchscreen_mode()
-	
 	tmr_long_press.wait_time = long_press_timeout / 1000
 	
-	container.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_KEEP_WIDTH, 0.0)
 	if floating_joystick_node and not Engine.is_editor_hint():
 		_enable_fvj(false)
 
+func _set_mode(mode: ETouchScreenMode):
+	state.tscreen_mode = mode
+	if btn_pan:
+		btn_pan.modulate = modulate_active if mode == ETouchScreenMode.PAN else modulate_inactive
+	if btn_rotate:
+		btn_rotate.modulate = modulate_active if mode == ETouchScreenMode.ROTATE else modulate_inactive
+	if btn_scale:
+		btn_scale.modulate = modulate_active if mode == ETouchScreenMode.SCALE else modulate_inactive
+
 func _toggle_touchscreen_mode():
-	var resource : Texture2D
-	if state.tscreen_mode == ETouchScreenMode.PAN:
-		state.tscreen_mode = ETouchScreenMode.ROTATE
-		resource = rotate_icon
-	else:
-		state.tscreen_mode = ETouchScreenMode.PAN
-		resource = pan_icon
-	btn_mode.texture_normal = resource
+	_set_mode(ETouchScreenMode.ROTATE if state.tscreen_mode == ETouchScreenMode.PAN else ETouchScreenMode.PAN)
+
 var _feedback_position = null
 
 func _draw() -> void:

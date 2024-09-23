@@ -210,4 +210,6 @@ layout_mode = 2
 [connection signal="pan_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_pan_gesture"]
 [connection signal="rotate_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_rotate_gesture"]
 [connection signal="scale_gesture" from="CanvasLayer/VBoxContainer/ScreenGesture" to="." method="_on_screen_gesture_scale_gesture"]
+[connection signal="button_up" from="CanvasLayer/VBoxContainer/ScreenGesture/MarginContainer/ToolboxContainer/TextureButtonMobile_Pan" to="CanvasLayer/VBoxContainer/ScreenGesture" method="_set_mode" binds= [0]]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/ScreenGesture/MarginContainer/ToolboxContainer/TextureButtonMobile_Pan/TSBtnPan" to="CanvasLayer/VBoxContainer/ScreenGesture" method="_set_mode" binds= [0]]
 [connection signal="item_selected" from="CanvasLayer/MarginContainer/Joystick Readout/OptionButton" to="." method="_on_option_button_item_selected"]
