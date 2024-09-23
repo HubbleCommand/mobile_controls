@@ -26,8 +26,8 @@ func _get_configuration_warnings() -> PackedStringArray:
 	
 	return warnings
 
-var btns_valid = false
 var ts_btn: TouchScreenButton
+var btn_hide_mod = Color.TRANSPARENT
 
 func _get_button() -> bool:
 	var child = get_child(0)
@@ -39,6 +39,13 @@ func _get_button() -> bool:
 func _ready() -> void:
 	item_rect_changed.connect(_tx_btn_rect_changed)
 	visibility_changed.connect(_tx_btn_visibility_changed)
+	
+	if is_mobile:
+		self_modulate = btn_hide_mod
+	else:
+		if _get_button():
+			pass
+			#ts_btn.visible = false
 
 func _tx_btn_rect_changed() -> void:
 	_resize_ts_btn()
